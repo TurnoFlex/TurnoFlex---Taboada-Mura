@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: turnoflex_db
+    restart: always
+    environment:
+      POSTGRES_DB: turnoflex
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secretpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infra/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./infra/02_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
+
+volumes:
+  postgres_data:
