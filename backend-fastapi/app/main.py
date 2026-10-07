@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth
+from app.routers import auth, services
 
 app = FastAPI(
     title="TurnoFlex - API FastAPI",
@@ -19,9 +19,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Incluir los routers
-app.include_router(auth.router)
-
+# Ruta raíz de comprobación
 @app.get("/")
 def read_root():
     return {"message": "API FastAPI funcionando correctamente"}
+
+# Incluir routers con el prefijo /api/v1
+app.include_router(auth.router)
+app.include_router(services.router, prefix="/api/v1")

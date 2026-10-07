@@ -45,3 +45,19 @@ def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+# app/security.py (adición)
+from fastapi import Depends, HTTPException, status
+# Suponiendo que get_current_user ya extrae el usuario del JWT implementado en la Issue #4
+from app.security import get_current_user 
+
+def require_admin(current_user: dict = Depends(get_current_user)):
+    """
+    Verifica que el usuario autenticado posea el rol 'ADMIN'.
+    Si es 'CLIENTE', lanza un error 403 Forbidden.
+    """
+    if current_user.get("role") != "ADMIN":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Acceso denegado: Se requieren permisos de ADMINISTRADOR."
+        )
+    return current_user
