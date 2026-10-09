@@ -1,3 +1,10 @@
+<!-- calidad:inicio -->
+![Calidad](https://img.shields.io/badge/Calidad-30%2F100-red) ![Cumple](https://img.shields.io/badge/Cumple-12%2F15-green) ![Aprobado](https://img.shields.io/badge/Aprobado-NO-red)
+
+**Calidad de servicios (heurístico):** índice **30/100** · cumple **12/15** · aprobado **NO** · capas **3**
+`SEC 0 · SQL 0 · DBG 2 · duplicación 14.1% · endpoints 26 · tests 0`
+<!-- calidad:fin -->
+
 Propuesta de Proyecto Final - Programación 3
 
 Proyecto: TurnoFlex (Sistema de Gestión y Reserva de Turnos)
