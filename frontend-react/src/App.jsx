@@ -6,6 +6,8 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
+import MyAppointments from "./pages/MyAppointments";
+import AdminDashboard from "./pages/AdminDashboard";
 
 export default function App() {
   return (
@@ -22,6 +24,22 @@ export default function App() {
                 element={
                   <ProtectedRoute>
                     <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/my-appointments"
+                element={
+                  <ProtectedRoute>
+                    <MyAppointments />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute>
+                    <AdminDashboard />
                   </ProtectedRoute>
                 }
               />
