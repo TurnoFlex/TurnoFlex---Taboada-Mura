@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { api } from "../services/api";
 
 const AuthContext = createContext();
 
@@ -7,23 +8,13 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("turnoflex_token") || null);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000/api/v1";
-
   useEffect(() => {
     const fetchUser = async () => {
       if (token) {
         try {
-          const res = await fetch(`${API_URL}/auth/me`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          if (res.ok) {
-            const data = await res.json();
-            setUser(data.user);
-          } else {
-            logout();
-          }
-        } catch (error) {
-          console.error("Error al verificar sesión:", error);
+          const data = await api.getMe(token);
+          setUser(data.user);
+        } catch {
           logout();
         }
       }
@@ -33,14 +24,7 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   const login = async (email, password) => {
-    const res = await fetch(`${API_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Credenciales inválidas.");
-
+    const data = await api.login(email, password);
     localStorage.setItem("turnoflex_token", data.token);
     setToken(data.token);
     setUser(data.user);
@@ -48,14 +32,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password, role = "CLIENTE") => {
-    const res = await fetch(`${API_URL}/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password, role }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Error al registrarse.");
-    return data;
+    return await api.register(name, email, password, role);
   };
 
   const logout = () => {
