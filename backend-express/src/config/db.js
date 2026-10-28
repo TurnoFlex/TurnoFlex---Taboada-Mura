@@ -9,12 +9,4 @@ const pool = new Pool({
   database: process.env.DB_NAME || "turnoflex_db",
 });
 
-pool.on("connect", () => {
-  console.log("✅ Conectado a la base de datos PostgreSQL");
-});
-
-pool.on("error", (err) => {
-  console.error("❌ Error inesperado en PostgreSQL:", err);
-});
-
 module.exports = pool;
