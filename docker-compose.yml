@@ -1,34 +1,12 @@
-infra/db-schema-and-seed
-version: '3.8'
-
 services:
-  postgres_db:
-    image: postgres:16-alpine
-    container_name: turnoflex_db
-    restart: always
-    environment:
-      POSTGRES_DB: turnoflex
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: secretpassword
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./infra/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
-      - ./infra/02_seed.sql:/docker-entrypoint-initdb.d/02_seed.sql
-
-volumes:
-  postgres_data:
-=======
-services: 
-
+  # 1. Base de Datos Relacional con Volumen Persistente
   postgres-db:
     image: postgres:15-alpine
     container_name: turnoflex_postgres
     restart: always
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-turnoflex_secret_password}
       POSTGRES_DB: ${POSTGRES_DB:-turnoflex_db}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
@@ -36,11 +14,56 @@ services:
       - turnoflex_pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-turnoflex_db}"]
-      interval: 10s
+      interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - turnoflex_net
+
+  # 2. Backend Express (Node.js)
+  backend-express:
+    build:
+      context: ./backend-express
+      dockerfile: Dockerfile
+    container_name: turnoflex_backend_express
+    restart: always
+    environment:
+      PORT: 3000
+      DB_HOST: postgres-db
+      DB_PORT: 5432
+      DB_USER: ${POSTGRES_USER:-postgres}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-turnoflex_secret_password}
+      DB_NAME: ${POSTGRES_DB:-turnoflex_db}
+      JWT_SECRET: ${JWT_SECRET:-turnoflex_super_secret_jwt_key_2026}
+      JWT_EXPIRES_IN: 24h
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - turnoflex_net
+
+  # 3. Frontend React (Vite)
+  frontend-react:
+    build:
+      context: ./frontend-react
+      dockerfile: Dockerfile
+    container_name: turnoflex_frontend_react
+    restart: always
+    environment:
+      VITE_API_URL: http://localhost:3000/api/v1
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend-express
+    networks:
+      - turnoflex_net
 
 volumes:
   turnoflex_pgdata:
     name: turnoflex_postgres_volume
-main
+
+networks:
+  turnoflex_net:
+    name: turnoflex_network
