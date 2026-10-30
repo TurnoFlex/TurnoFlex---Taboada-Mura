@@ -1,34 +1,39 @@
-import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import { jwtDecode } from 'jwt-decode'
+import { defineStore } from 'pinia';
+import api from '../api/axios';
 
-export const useAuthStore = defineStore('auth', () => {
-  const token = ref(localStorage.getItem('token') || null)
-  const user = ref(JSON.parse(localStorage.getItem('user')) || null)
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    user: JSON.parse(localStorage.getItem('user')) || null,
+    token: localStorage.getItem('token') || null,
+    error: null,
+  }),
+  actions: {
+    async login(credentials) {
+      this.error = null;
+      try {
+        const response = await api.post('/auth/login', credentials);
+        this.token = response.data.access_token || response.data.token;
+        
+        localStorage.setItem('token', this.token);
 
-  const isAuthenticated = computed(() => !!token.value)
-  const isAdmin = computed(() => user.value?.role === 'ADMIN')
+        // Guardar la información del usuario logueado
+        this.user = response.data.user || {
+          email: credentials.email || credentials.username,
+          full_name: 'Máximo Mura'
+        };
 
-  function setAuthData(newToken, userData) {
-    token.value = newToken
-    user.value = userData
-    localStorage.setItem('token', newToken)
-    localStorage.setItem('user', JSON.stringify(userData))
+        localStorage.setItem('user', JSON.stringify(this.user));
+        return true;
+      } catch (err) {
+        this.error = err.response?.data?.detail || 'Error de conexión con el servidor.';
+        throw err;
+      }
+    },
+    logout() {
+      this.token = null;
+      this.user = null;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    }
   }
-
-  function logout() {
-    token.value = null
-    user.value = null
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-  }
-
-  return {
-    token,
-    user,
-    isAuthenticated,
-    isAdmin,
-    setAuthData,
-    logout
-  }
-})
+});
