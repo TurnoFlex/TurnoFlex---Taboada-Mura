@@ -19,3 +19,7 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+
+# Reportes de cobertura
+coverage/
+backend-express/coverage/
