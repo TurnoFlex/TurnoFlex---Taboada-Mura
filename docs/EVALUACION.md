@@ -3,20 +3,20 @@
 
 > Documento **generado automáticamente** por la cátedra de Programación III (RepoSense + análisis de calidad + constancia). **No editar a mano**: se regenera en cada evaluación.
 > Rama evaluada: `main`. Análisis **heurístico** (regex + métricas): es una criba para orientar la revisión, **no una nota**.
-> Generado: 2026-10-29.
+> Generado: 2026-11-02.
 
 ## 1. Veredicto
 
 | Aspecto | Resultado |
 |---|---|
 | Tipo de proyecto | frontend |
-| Índice de calidad de servicios | **29/100** (mínimo 60) |
-| Criterios cumplidos | **14/15** |
+| Índice de calidad de servicios | **27/100** (mínimo 60) |
+| Criterios cumplidos | **13/15** |
 | Aprobado (semáforo) | **NO** |
-| Código (LOC) | 2,441 |
-| Archivos de código | 56 |
+| Código (LOC) | 2,978 |
+| Archivos de código | 64 |
 | Tests (archivos) | 1 |
-| Cobertura de líneas | 80.4% (mínimo 80%) |
+| Cobertura de líneas | 40.7% (mínimo 80%) |
 | Capas detectadas | vistas, servicios, estado |
 
 > **Aprobado** exige cumplir **todos** los criterios del semáforo. No es una nota: sirve para ordenar y priorizar la revisión.
@@ -25,12 +25,10 @@
 
 | Autor | Commits | Código (LOC) | Tests (LOC) | Docs (LOC) | Días activos | % del código |
 |---|---:|---:|---:|---:|---:|---:|
-| Emir Taboada | 10 | 1,734 | 200 | 91 | 11 | 60% |
-| maximo mura | 6 | 1,148 | 0 | 14 | 7 | 40% |
+| maximo mura | 7 | 1,742 | 0 | 14 | 8 | 50% |
+| Emir Taboada | 12 | 1,734 | 200 | 91 | 12 | 50% |
 
 > _El LOC de autoría lo calcula RepoSense sobre el historial y puede diferir del LOC de código del análisis de calidad (que mira solo el estado de `main`)._
-
-> **Reparto del trabajo:** Emir Taboada concentra el 60% de las líneas de código. Un reparto muy desigual suele indicar que la integración no fue realmente en equipo; vale la pena reconstruir cómo se coordinó.
 
 ## 3. Constancia (IC) — todas las ramas
 
@@ -38,8 +36,8 @@
 
 | Alumno | Sesiones | Cumplimiento | Pausa | Recencia | IC | Nivel | Para subir de nivel |
 |---|--:|--:|--:|--:|--:|--|--|
-| Emir Taboada | 7 | 32% | 26 d | 93% | **34** | No aprueba | Cumplimiento 32% (mín. 50%); Pausa 26 d (máx. 10 d) |
 | maximo mura | 6 | 27% | 14 d | 7% | **19** | No aprueba | Cumplimiento 27% (mín. 50%); Pausa 14 d (máx. 10 d); Recencia 7% (mín. 50%) |
+| Emir Taboada | 7 | 32% | 26 d | 93% | **34** | No aprueba | Cumplimiento 32% (mín. 50%); Pausa 26 d (máx. 10 d) |
 
 > Para aprobar el IC: **2 sesiones por semana** sostenidas, sin pausas mayores a **10 días** y con actividad en las **últimas 2 semanas**. Se excluyen merges, bots y al docente. Zona horaria UTC-3.
 
@@ -51,7 +49,7 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 - **Qué mide:** Un resumen numérico (0-100) que combina todas las señales y métricas del análisis, con topes duros por duplicación.
 - **Por qué importa:** Ordena y prioriza la revisión: un índice bajo indica varias señales que conviene mirar juntas.
-- **Tu resultado:** índice **29/100** _(mínimo 60)_
+- **Tu resultado:** índice **27/100** _(mínimo 60)_
 - **Para investigar la causa:**
     - ¿En qué momento del proyecto se concentraron los problemas (arranque, integración de partes, cierre)?
     - ¿El índice bajó por muchas señales chicas o por una o dos graves?
@@ -61,7 +59,7 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 - **Qué mide:** Porcentaje de bloques de código repetidos (similitud) en el repositorio.
 - **Por qué importa:** Cada copia se mantiene por separado: un arreglo hay que repetirlo y los defectos se multiplican.
-- **Tu resultado:** **8.8%** de duplicación _(máximo 15%)_
+- **Tu resultado:** **7.9%** de duplicación _(máximo 15%)_
 
 ### 3. Secretos hardcodeados (SEC) — OK
 
@@ -103,7 +101,7 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 - **Qué mide:** Componentes de UI muy extensos, que suelen mezclar render, estado y lógica.
 - **Por qué importa:** Son difíciles de leer, probar y reutilizar, y sus cambios tienen efectos inesperados.
-- **Tu resultado:** **0** componente(s) demasiado grande(s) _(máximo 1)_
+- **Tu resultado:** **1** componente(s) demasiado grande(s) _(máximo 1)_
 
 ### 10. Baja cohesión (Coh) — OK
 
@@ -115,7 +113,7 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 - **Qué mide:** Complejidad ciclomática: cantidad de caminos posibles dentro de una función (condicionales, bucles, casos).
 - **Por qué importa:** Muchos caminos = difícil de seguir y de probar; suelen esconderse casos sin cubrir.
-- **Tu resultado:** **5** bloque(s) de complejidad alta _(máximo 5 por 1000 LOC (tenés 2441 LOC))_
+- **Tu resultado:** **6** bloque(s) de complejidad alta _(máximo 5 por 1000 LOC (tenés 2978 LOC))_
 
 ### 12. Funciones/métodos largos o con muchos parámetros (Tam) — OK
 
@@ -129,31 +127,36 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 - **Por qué importa:** Piezas muy enlazadas hacen que un cambio se propague y que sea difícil reemplazar partes.
 - **Tu resultado:** **1** unidad(es) con acoplamiento alto _(máximo 2 por 1000 LOC)_
 
-### 14. Cobertura de tests (Cob) — OK
+### 14. Cobertura de tests (Cob) — A REVISAR
 
 - **Qué mide:** Porcentaje de líneas de código ejecutadas por la suite de tests (cobertura real, no cantidad de archivos de test).
 - **Por qué importa:** Un test que existe pero no ejecuta el código no protege de nada: la cobertura muestra qué partes quedan sin verificar.
-- **Tu resultado:** **80.4%** de líneas cubiertas · fuente: artefacto: coverage/lcov.info _(mínimo 80% de líneas)_
+- **Tu resultado:** **40.7%** de líneas cubiertas · fuente: ejecución: jest _(mínimo 80% de líneas)_
+- **Para investigar la causa:**
+    - ¿Qué módulos o ramas del sistema nunca se ejecutan en los tests?
+    - ¿Los tests prueban el camino principal y los errores, o solo el caso feliz?
+    - ¿La suite se puede correr en CI sin base de datos ni servicios externos?
 
 ### 15. Vistas del frontend (Vistas) — OK
 
 - **Qué mide:** Cantidad de vistas/componentes de pantalla del frontend.
 - **Por qué importa:** El frontend se mide por pantallas: pocas vistas sugiere poca cobertura de la interfaz pedida.
-- **Tu resultado:** **19** vista(s)/componente(s) _(mínimo 8)_
+- **Tu resultado:** **24** vista(s)/componente(s) _(mínimo 8)_
 
 ## 5. Qué falta para aprobar
 
-Criterios que hoy están en rojo y qué habría que cambiar para alcanzar el nivel de aprobación (perfil `exigente`):
+Criterios que hoy están en rojo y, para cada uno, una explicación breve de **cómo corregirlo** hasta alcanzar el nivel de aprobación (perfil `exigente`):
 
-| Criterio | Resultado actual | Meta | Qué arreglar |
+| Criterio | Resultado actual | Meta | Cómo corregirlo |
 |---|---|---|---|
-| Índice de calidad de servicios (indice) | índice **29/100** | mínimo 60 | Subir el índice a ≥60 corrigiendo primero las señales de más peso: duplicación, secretos, SQL y capas. |
+| Índice de calidad de servicios (indice) | índice **27/100** | mínimo 60 | El índice es un resumen: sube al corregir los criterios en rojo. Empezá por los de más peso (duplicación ≤15%, SEC y SQL en 0, capas ≥2) y volvé a medir; la meta es ≥60. |
+| Cobertura de tests (Cob) | **40.7%** de líneas cubiertas · fuente: ejecución: jest | mínimo 80% de líneas | Agregá o ampliá tests que ejecuten los módulos sin cubrir (camino principal y errores) y publicá el artefacto (`coverage/lcov.info`, `coverage-summary.json`, `coverage.xml` o `coverage.json`) o corré la suite con coverage. Meta: ≥80% de líneas. |
 
-> Empezá por las señales de seguridad (**SEC**, **SQL**) y por la **duplicación**: son las que más pesan en el índice y las más rápidas de verificar a ojo.
+> Empezá por las señales de seguridad (**SEC**, **SQL**) y por la **duplicación**: son las que más pesan en el índice y las más rápidas de verificar a ojo. Después de corregir, volvé a correr la medición: el semáforo se recalcula sobre `main`.
 
 ## 6. Anexo: dónde mirar
 
-_No hay criterios en rojo con archivos asociados._
+Archivos donde el análisis encontró cada señal en rojo (sin número de línea, a propósito):
 
 ---
 _Informe generado por la cátedra. Los umbrales corresponden al perfil `exigente`. Ante dudas, revisá el archivo señalado y el criterio en `CRITERIOS-CALIDAD.md`._
