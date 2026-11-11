@@ -11,12 +11,12 @@
 |---|---|
 | Tipo de proyecto | app |
 | Índice de calidad de servicios | **100/100** (mínimo 50) |
-| Criterios cumplidos | **15/16** |
-| Aprobado (semáforo) | **NO** |
-| Código (LOC) | 2,799 |
-| Archivos de código | 63 |
-| Tests (archivos) | 1 |
-| Cobertura de líneas | 40.7% (mínimo 80%) |
+| Criterios cumplidos | **16/16** |
+| Aprobado (semáforo) | **SI** |
+| Código (LOC) | 2,939 |
+| Archivos de código | 64 |
+| Tests (archivos) | 11 |
+| Cobertura de líneas | 92.6% (mínimo 80%) |
 | Capas detectadas | presentacion, logica, datos, vistas, servicios, estado |
 | Pushes directos a `main` (sin PR) | 1 |
 
@@ -28,8 +28,8 @@
 
 | Autor | Commits | Código (LOC) | Tests (LOC) | Docs (LOC) | Días activos | % del código |
 |---|---:|---:|---:|---:|---:|---:|
-| maximo mura | 7 | 1,742 | 0 | 14 | 8 | 50% |
-| Emir Taboada | 12 | 1,734 | 200 | 91 | 12 | 50% |
+| maximo mura | 8 | 1,892 | 362 | 14 | 9 | 52% |
+| Emir Taboada | 13 | 1,734 | 226 | 91 | 13 | 48% |
 
 > _El LOC de autoría lo calcula RepoSense sobre el historial y puede diferir del LOC de código del análisis de calidad (que mira solo el estado de `main`)._
 
@@ -39,8 +39,8 @@
 
 | Alumno | Sesiones | Cumplimiento | Pausa | Recencia | IC | Nivel | Para subir de nivel |
 |---|--:|--:|--:|--:|--:|--|--|
-| maximo mura | 7 | 30% | 14 d | 14% | **22** | No aprueba | Cumplimiento 30% (mín. 50%); Recencia 14% (mín. 50%) |
-| Emir Taboada | 7 | 30% | 26 d | 0% | **20** | No aprueba | Cumplimiento 30% (mín. 50%); Recencia 0% (mín. 50%) |
+| maximo mura | 8 | 31% | 14 d | 100% | **34** | No aprueba | Cumplimiento 31% (mín. 50%) |
+| Emir Taboada | 8 | 31% | 26 d | 100% | **34** | No aprueba | Cumplimiento 31% (mín. 50%) |
 
 > Para aprobar el IC: **2 sesiones por semana** sostenidas, sin pausas mayores a **10 días** y con actividad en las **últimas 2 semanas**. Se excluyen merges, bots y al docente. Zona horaria UTC-3.
 
@@ -58,7 +58,7 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 - **Qué mide:** Porcentaje de bloques de código repetidos (similitud) en el repositorio.
 - **Por qué importa:** Cada copia se mantiene por separado: un arreglo hay que repetirlo y los defectos se multiplican.
-- **Tu resultado:** **6.7%** de duplicación _(máximo 15%)_
+- **Tu resultado:** **6.6%** de duplicación _(máximo 15%)_
 
 ### 3. Secretos hardcodeados (SEC) — OK
 
@@ -112,7 +112,7 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 - **Qué mide:** Complejidad ciclomática: cantidad de caminos posibles dentro de una función (condicionales, bucles, casos).
 - **Por qué importa:** Muchos caminos = difícil de seguir y de probar; suelen esconderse casos sin cubrir.
-- **Tu resultado:** **6** bloque(s) de complejidad alta _(máximo 5 por 1000 LOC (tenés 2799 LOC))_
+- **Tu resultado:** **6** bloque(s) de complejidad alta _(máximo 5 por 1000 LOC (tenés 2939 LOC))_
 
 ### 12. Funciones/métodos largos o con muchos parámetros (Tam) — OK
 
@@ -126,21 +126,17 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 - **Por qué importa:** Piezas muy enlazadas hacen que un cambio se propague y que sea difícil reemplazar partes.
 - **Tu resultado:** **1** unidad(es) con acoplamiento alto _(máximo 2 por 1000 LOC)_
 
-### 14. Cobertura de tests (Cob) — A REVISAR
+### 14. Cobertura de tests (Cob) — OK
 
 - **Qué mide:** Porcentaje de líneas de código ejecutadas por la suite de tests (cobertura real, no cantidad de archivos de test).
 - **Por qué importa:** Un test que existe pero no ejecuta el código no protege de nada: la cobertura muestra qué partes quedan sin verificar.
-- **Tu resultado:** **40.7%** de líneas cubiertas · fuente: ejecución: jest _(mínimo 80% de líneas)_
-- **Para investigar la causa:**
-    - ¿Qué módulos o ramas del sistema nunca se ejecutan en los tests?
-    - ¿Los tests prueban el camino principal y los errores, o solo el caso feliz?
-    - ¿La suite se puede correr en CI sin base de datos ni servicios externos?
+- **Tu resultado:** **92.6%** de líneas cubiertas · fuente: artefacto: coverage/lcov.info (frontend-vue 94.6%, backend-express 82.7%) _(mínimo 80% de líneas)_
 
 ### 15. Endpoints del backend (EP) — OK
 
 - **Qué mide:** Cantidad de endpoints (rutas HTTP) expuestos por el backend.
 - **Por qué importa:** El backend se mide por lo que expone: pocos endpoints sugiere poca funcionalidad de servicio.
-- **Tu resultado:** **41** endpoint(s) _(mínimo 5)_
+- **Tu resultado:** **39** endpoint(s) _(mínimo 5)_
 
 ### 16. Vistas del frontend (Vistas) — OK
 
@@ -150,23 +146,15 @@ Cada aspecto indica **qué mide**, **por qué importa** y **tu resultado**. Cuan
 
 ## 5. Observaciones y qué falta
 
-Criterios que hoy están en rojo y, para cada uno, una explicación breve de **cómo corregirlo** hasta alcanzar el nivel de aprobación (perfil `exigente`):
-
-| Criterio | Resultado actual | Meta | Brecha | Cómo alcanzarlo |
-|---|---|---|---|---|
-| Cobertura de tests (Cob) | **40.7%** de líneas cubiertas · fuente: ejecución: jest | mínimo 80% de líneas | faltan 39.3 pts | Agregá o ampliá tests que ejecuten los módulos sin cubrir (camino principal y errores) y publicá el artefacto (`coverage/lcov.info`, `coverage-summary.json`, `coverage.xml` o `coverage.json`) o corré la suite con coverage. Meta: ≥80% de líneas. |
-
-> Empezá por las señales de seguridad (**SEC**, **SQL**) y por la **duplicación**: son las que más pesan en el índice y las más rápidas de verificar a ojo. Después de corregir, volvé a correr la medición: el semáforo se recalcula sobre `main`.
-
-> **Tests (informativo):** hoy tenés **1** archivo(s) de test; la meta es **5**, pero **no** es una compuerta del semáforo. Para acercarte, agregá tests de los flujos principales (servicios y endpoints) y corré la suite con coverage.
+_Cumple **todos** los criterios del semáforo: no hay nada que arreglar para aprobar. El siguiente objetivo es sostenerlo y mejorar duplicación y diseño._
 
 ## 6. Actividad en clase (miércoles y viernes)
 
-> Se consideran las **23 clases** del período (miércoles y viernes, según `config/constancia.json`; feriados y semanas sin clase descontados). `Commits` = commits de trabajo (no-merge); `Merges` = merges de PR (también son push). Los días sin actividad dicen **sin actividad**.
+> Se consideran las **26 clases** del período (miércoles y viernes, según `config/constancia.json`; feriados y semanas sin clase descontados). `Commits` = commits de trabajo (no-merge); `Merges` = merges de PR (también son push). Los días sin actividad dicen **sin actividad**.
 
 ### Emir Taboada
 
-**12/23 clases con actividad** · 13 commits · 9 merges
+**13/26 clases con actividad** · 14 commits · 10 merges
 
 | Fecha | Actividad | Repositorios | Commits / merges |
 |---|:--:|---|--:|
@@ -193,10 +181,13 @@ Criterios que hoy están en rojo y, para cada uno, una explicación breve de **c
 | 2026-10-23 | No | sin actividad | 0 / 0 |
 | 2026-10-28 | **Sí** | TurnoFlex---Taboada-Mura | 1 / 1 |
 | 2026-10-30 | **Sí** | TurnoFlex---Taboada-Mura | 2 / 2 |
+| 2026-11-04 | No | sin actividad | 0 / 0 |
+| 2026-11-06 | No | sin actividad | 0 / 0 |
+| 2026-11-11 | **Sí** | TurnoFlex---Taboada-Mura | 1 / 1 |
 
 ### maximo mura
 
-**8/23 clases con actividad** · 7 commits · 6 merges
+**9/26 clases con actividad** · 8 commits · 7 merges
 
 | Fecha | Actividad | Repositorios | Commits / merges |
 |---|:--:|---|--:|
@@ -223,10 +214,13 @@ Criterios que hoy están en rojo y, para cada uno, una explicación breve de **c
 | 2026-10-23 | No | sin actividad | 0 / 0 |
 | 2026-10-28 | No | sin actividad | 0 / 0 |
 | 2026-10-30 | **Sí** | TurnoFlex---Taboada-Mura | 1 / 1 |
+| 2026-11-04 | No | sin actividad | 0 / 0 |
+| 2026-11-06 | No | sin actividad | 0 / 0 |
+| 2026-11-11 | **Sí** | TurnoFlex---Taboada-Mura | 1 / 1 |
 
 ## 7. Anexo: dónde mirar
 
-Archivos donde el análisis encontró cada señal en rojo (sin número de línea, a propósito):
+_No hay criterios en rojo con archivos asociados._
 
 ---
 _Informe generado por la cátedra. Los umbrales corresponden al perfil `exigente`. Ante dudas, revisá el archivo señalado y el criterio en `CRITERIOS-CALIDAD.md`._
