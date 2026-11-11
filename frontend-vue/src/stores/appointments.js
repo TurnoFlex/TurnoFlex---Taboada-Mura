@@ -3,40 +3,48 @@ import api from '../api/axios';
 
 export const useAppointmentsStore = defineStore('appointments', {
   state: () => ({
-    myAppointments: [],
-    allAppointments: [],
+    appointments: JSON.parse(localStorage.getItem('turnoflex_appointments') || '[]'),
     loading: false,
-    error: null,
+    error: null
   }),
   actions: {
-    async fetchMyAppointments() {
+    async fetchAppointments() {
       this.loading = true;
       try {
-        const res = await api.get('/appointments/my-appointments');
-        this.myAppointments = res.data;
+        const response = await api.get('/appointments/my-appointments');
+        if (response.data && response.data.length > 0) {
+          this.appointments = response.data;
+          localStorage.setItem('turnoflex_appointments', JSON.stringify(this.appointments));
+        }
       } catch (err) {
-        this.error = err.response?.data?.message || 'Error al obtener mis turnos';
+        // Mantiene las reservas locales
       } finally {
         this.loading = false;
       }
     },
-    async fetchAllAppointments() {
-      this.loading = true;
-      try {
-        const res = await api.get('/appointments');
-        this.allAppointments = res.data;
-      } catch (err) {
-        this.error = err.response?.data?.message || 'Error al cargar la agenda global';
-      } finally {
-        this.loading = false;
-      }
+    addAppointment(appointmentData) {
+      const newAppointment = {
+        id: Date.now(),
+        service_id: appointmentData.service_id,
+        service_name: appointmentData.service_name,
+        category: appointmentData.category || 'General',
+        price: appointmentData.price,
+        date: appointmentData.date,
+        time: appointmentData.time,
+        status: 'Pendiente',
+        image: appointmentData.image,
+        created_at: new Date().toLocaleDateString('es-AR')
+      };
+
+      this.appointments.unshift(newAppointment);
+      localStorage.setItem('turnoflex_appointments', JSON.stringify(this.appointments));
+
+      // Intento opcional de sincronizar con el backend
+      api.post('/appointments', newAppointment).catch(() => {});
     },
-    async bookAppointment(appointmentData) {
-      await api.post('/appointments', appointmentData);
-    },
-    async updateStatus(id, status) {
-      await api.patch(`/appointments/${id}/status`, { status });
-      await this.fetchAllAppointments();
+    cancelAppointment(id) {
+      this.appointments = this.appointments.filter(a => a.id !== id);
+      localStorage.setItem('turnoflex_appointments', JSON.stringify(this.appointments));
     }
   }
 });
