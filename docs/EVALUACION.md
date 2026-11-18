@@ -3,7 +3,7 @@
 
 > Documento **generado automáticamente** por la cátedra de Programación III (RepoSense + análisis de calidad + constancia). **No editar a mano**: se regenera en cada evaluación.
 > Rama evaluada: `main`. Análisis **heurístico** (regex + métricas): es una criba para orientar la revisión, **no una nota**.
-> Generado: 2026-11-17.
+> Generado: 2026-11-18.
 
 ## 1. Veredicto
 
@@ -39,8 +39,8 @@
 
 | Alumno | Sesiones | Cumplimiento | Pausa | Recencia | IC | Nivel | Para subir de nivel |
 |---|--:|--:|--:|--:|--:|--|--|
-| maximo mura | 8 | 30% | 14 d | 64% | **28** | No aprueba | Cumplimiento 30% (mín. 50%) |
-| Emir Taboada | 8 | 30% | 26 d | 64% | **28** | No aprueba | Cumplimiento 30% (mín. 50%) |
+| maximo mura | 8 | 29% | 14 d | 50% | **26** | No aprueba | Cumplimiento 29% (mín. 50%) |
+| Emir Taboada | 8 | 29% | 26 d | 50% | **26** | No aprueba | Cumplimiento 29% (mín. 50%) |
 
 > Para aprobar el IC: **2 sesiones por semana** sostenidas, sin pausas mayores a **10 días** y con actividad en las **últimas 2 semanas**. Se excluyen merges, bots y al docente. Zona horaria UTC-3.
 
@@ -150,11 +150,11 @@ _Cumple **todos** los criterios del semáforo: no hay nada que arreglar para apr
 
 ## 6. Actividad en clase y fuera de clase
 
-> Se consideran las **27 clases** del período (miércoles y viernes, según `config/constancia.json`; feriados y semanas sin clase descontados). Para cada alumno se muestra la actividad **en cada clase** y también la actividad **fuera de los días de clase** (fines de semana u otros días). `Commits` = commits de trabajo (no-merge); `Merges` = merges de PR (también son push). Los días sin actividad dicen **sin actividad**.
+> Se consideran las **28 clases** del período (miércoles y viernes, según `config/constancia.json`; feriados y semanas sin clase descontados). Para cada alumno se muestra la actividad **en cada clase** y también la actividad **fuera de los días de clase** (fines de semana u otros días). `Commits` = commits de trabajo (no-merge); `Merges` = merges de PR (también son push). Los días sin actividad dicen **sin actividad**.
 
 ### Emir Taboada
 
-**13/27 clases con actividad** · total del período: 14 commits · 10 merges
+**13/28 clases con actividad** · total del período: 14 commits · 10 merges
 
 | Fecha | Actividad | Repositorios | Commits / merges |
 |---|:--:|---|--:|
@@ -185,6 +185,7 @@ _Cumple **todos** los criterios del semáforo: no hay nada que arreglar para apr
 | 2026-11-06 | No | sin actividad | 0 / 0 |
 | 2026-11-11 | **Sí** | TurnoFlex---Taboada-Mura | 1 / 1 |
 | 2026-11-13 | No | sin actividad | 0 / 0 |
+| 2026-11-18 | No | sin actividad | 0 / 0 |
 
 **Fuera de clase:** 1 fecha(s) con actividad · 0 commits · 1 merges
 
@@ -194,7 +195,7 @@ _Cumple **todos** los criterios del semáforo: no hay nada que arreglar para apr
 
 ### maximo mura
 
-**9/27 clases con actividad** · total del período: 8 commits · 7 merges
+**9/28 clases con actividad** · total del período: 8 commits · 7 merges
 
 | Fecha | Actividad | Repositorios | Commits / merges |
 |---|:--:|---|--:|
@@ -225,6 +226,7 @@ _Cumple **todos** los criterios del semáforo: no hay nada que arreglar para apr
 | 2026-11-06 | No | sin actividad | 0 / 0 |
 | 2026-11-11 | **Sí** | TurnoFlex---Taboada-Mura | 1 / 1 |
 | 2026-11-13 | No | sin actividad | 0 / 0 |
+| 2026-11-18 | No | sin actividad | 0 / 0 |
 
 **Fuera de clase:** sin actividad registrada.
 
