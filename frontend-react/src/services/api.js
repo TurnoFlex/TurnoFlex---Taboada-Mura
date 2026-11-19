@@ -6,7 +6,6 @@ const getHeaders = (token) => ({
 });
 
 export const api = {
-  // Auth
   login: async (email, password) => {
     const res = await fetch(`${API_URL}/auth/login`, {
       method: "POST",
@@ -37,7 +36,6 @@ export const api = {
     return res.json();
   },
 
-  // Services
   getServices: async (token) => {
     const res = await fetch(`${API_URL}/services`, {
       headers: getHeaders(token),
@@ -57,7 +55,27 @@ export const api = {
     return data;
   },
 
-  // Appointments
+  updateService: async (token, id, serviceData) => {
+    const res = await fetch(`${API_URL}/services/${id}`, {
+      method: "PUT",
+      headers: getHeaders(token),
+      body: JSON.stringify(serviceData),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al actualizar servicio");
+    return data;
+  },
+
+  deleteService: async (token, id) => {
+    const res = await fetch(`${API_URL}/services/${id}`, {
+      method: "DELETE",
+      headers: getHeaders(token),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al eliminar servicio");
+    return data;
+  },
+
   getMyAppointments: async (token) => {
     const res = await fetch(`${API_URL}/appointments/my-appointments`, {
       headers: getHeaders(token),

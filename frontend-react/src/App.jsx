@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AIChatWidget from "./components/AIChatWidget";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Home from "./pages/Home";
@@ -13,7 +14,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+        <div className="min-h-screen bg-slate-950 flex flex-col font-sans relative">
           <Navbar />
           <main className="flex-1">
             <Routes>
@@ -46,6 +47,7 @@ export default function App() {
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </main>
+          <AIChatWidget />
         </div>
       </AuthProvider>
     </BrowserRouter>

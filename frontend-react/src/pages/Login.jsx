@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { api } from "../services/api";
+import TwoFactorModal from "../components/TwoFactorModal";
 import { Lock, Mail, AlertCircle } from "lucide-react";
 
 export default function Login() {
@@ -8,26 +10,29 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  
+  const [twoFactorData, setTwoFactorData] = useState(null);
+  const [twoFactorError, setTwoFactorError] = useState("");
+  const [verifying2FA, setVerifying2FA] = useState(false);
+
+  const { completeLoginWithToken } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
-    if (!email.includes("@")) {
-      setError("Por favor ingresa un correo electrónico válido.");
-      return;
-    }
-    if (password.length < 4) {
-      setError("La contraseña debe tener al menos 4 caracteres.");
-      return;
-    }
+    if (!email.includes("@")) return setError("Email inválido.");
+    if (password.length < 4) return setError("Contraseña muy corta.");
 
     setLoading(true);
     try {
-      await login(email, password);
-      navigate("/");
+      const res = await api.login(email, password);
+      if (res.require2FA) {
+        setTwoFactorData(res);
+      } else if (res.token) {
+        completeLoginWithToken(res.token, res.user);
+        navigate("/");
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -35,8 +40,32 @@ export default function Login() {
     }
   };
 
+  const handleVerify2FA = async (code) => {
+    setTwoFactorError("");
+    setVerifying2FA(true);
+    try {
+      const res = await api.verify2FA(twoFactorData.userId, code);
+      completeLoginWithToken(res.token, res.user);
+      navigate("/");
+    } catch (err) {
+      setTwoFactorError(err.message);
+    } finally {
+      setVerifying2FA(false);
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-73px)] flex items-center justify-center px-4 bg-slate-950">
+      {twoFactorData && (
+        <TwoFactorModal
+          email={twoFactorData.email}
+          onVerify={handleVerify2FA}
+          onCancel={() => setTwoFactorData(null)}
+          loading={verifying2FA}
+          error={twoFactorError}
+        />
+      )}
+
       <div className="max-w-md w-full bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-2xl">
         <h2 className="text-3xl font-extrabold text-white text-center mb-2">Iniciar Sesión</h2>
         <p className="text-slate-400 text-sm text-center mb-6">Accedé a tu cuenta en TurnoFlex</p>
@@ -84,7 +113,7 @@ export default function Login() {
             disabled={loading}
             className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl text-sm transition shadow-lg mt-2 disabled:opacity-50"
           >
-            {loading ? "Entrando..." : "Entrar a TurnoFlex"}
+            {loading ? "Comprobando..." : "Continuar"}
           </button>
         </form>
 

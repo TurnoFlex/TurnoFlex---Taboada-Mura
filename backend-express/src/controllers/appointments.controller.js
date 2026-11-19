@@ -1,6 +1,5 @@
 const pool = require("../config/db");
 
-// Crear / Reservar un Turno con Algoritmo Anti-Solapamiento
 const createAppointment = async (req, res) => {
   try {
     const { service_id, start_time } = req.body;
@@ -21,7 +20,6 @@ const createAppointment = async (req, res) => {
       return res.status(400).json({ error: "No se pueden agendar turnos en fechas u horas pasadas." });
     }
 
-    // Buscar el servicio para obtener la duración en minutos
     const serviceQuery = await pool.query("SELECT * FROM services WHERE id = $1", [service_id]);
     if (serviceQuery.rows.length === 0) {
       return res.status(404).json({ error: "El servicio seleccionado no existe." });
@@ -31,30 +29,29 @@ const createAppointment = async (req, res) => {
     const durationMs = service.duration_minutes * 60 * 1000;
     const requestedEnd = new Date(requestedStart.getTime() + durationMs);
 
-    // Algoritmo Anti-Solapamiento (Verifica si hay solapamiento para el mismo servicio)
-    // (start_time < requestedEnd) AND (end_time > requestedStart) AND status != CANCELADO
+    // Algoritmo Anti-Solapamiento Global:
+    // Si ya existe CUALQUIER turno en ese intervalo horario (status != CANCELADO), se bloquea.
     const overlapQuery = `
-      SELECT id FROM appointments 
-      WHERE service_id = $1 
-        AND status != $2
-        AND start_time < $3 
-        AND end_time > $4
+      SELECT a.id, s.name as service_name, a.start_time, a.end_time
+      FROM appointments a
+      JOIN services s ON a.service_id = s.id
+      WHERE a.status != 'CANCELADO'
+        AND a.start_time < $1 
+        AND a.end_time > $2
     `;
 
     const overlapResult = await pool.query(overlapQuery, [
-      service_id,
-      "CANCELADO",
       requestedEnd.toISOString(),
       requestedStart.toISOString()
     ]);
 
     if (overlapResult.rows.length > 0) {
+      const busy = overlapResult.rows[0];
       return res.status(409).json({
-        error: "Conflicto de horario: El turno seleccionado ya se encuentra ocupado para este servicio."
+        error: `Conflicto de horario: Ya existe un turno reservado (${busy.service_name}) en ese intervalo de horario.`
       });
     }
 
-    // Insertar el turno
     const insertQuery = `
       INSERT INTO appointments (user_id, service_id, start_time, end_time, status)
       VALUES ($1, $2, $3, $4, $5)
@@ -74,12 +71,10 @@ const createAppointment = async (req, res) => {
       appointment: newAppointment.rows[0]
     });
   } catch (error) {
-    console.error("Error en createAppointment:", error);
     return res.status(500).json({ error: "Error interno al reservar el turno" });
   }
 };
 
-// Ver mis turnos (Cliente autenticado)
 const getMyAppointments = async (req, res) => {
   try {
     const user_id = req.user.id;
@@ -94,12 +89,10 @@ const getMyAppointments = async (req, res) => {
     const result = await pool.query(query, [user_id]);
     return res.status(200).json(result.rows);
   } catch (error) {
-    console.error("Error en getMyAppointments:", error);
     return res.status(500).json({ error: "Error al obtener tus turnos" });
   }
 };
 
-// Ver todos los turnos (Admin)
 const getAllAppointments = async (req, res) => {
   try {
     const query = `
@@ -114,12 +107,10 @@ const getAllAppointments = async (req, res) => {
     const result = await pool.query(query);
     return res.status(200).json(result.rows);
   } catch (error) {
-    console.error("Error en getAllAppointments:", error);
     return res.status(500).json({ error: "Error al obtener la agenda de turnos" });
   }
 };
 
-// Cambiar estado de un turno (Admin o Cliente cancelando el suyo)
 const updateAppointmentStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -128,26 +119,16 @@ const updateAppointmentStatus = async (req, res) => {
 
     const validStatuses = ["PENDIENTE", "CONFIRMADO", "CANCELADO", "COMPLETADO"];
     if (!status || !validStatuses.includes(status)) {
-      return res.status(400).json({
-        error: "Estado inválido. Opciones permitidas: PENDIENTE, CONFIRMADO, CANCELADO, COMPLETADO."
-      });
+      return res.status(400).json({ error: "Estado inválido." });
     }
 
     const appointmentQuery = await pool.query("SELECT * FROM appointments WHERE id = $1", [id]);
-    if (appointmentQuery.rows.length === 0) {
-      return res.status(404).json({ error: "Turno no encontrado." });
-    }
+    if (appointmentQuery.rows.length === 0) return res.status(404).json({ error: "Turno no encontrado." });
 
     const appointment = appointmentQuery.rows[0];
 
-    // Si es cliente, solo puede cancelar su propio turno
-    if (user.role === "CLIENTE") {
-      if (appointment.user_id !== user.id) {
-        return res.status(403).json({ error: "Acceso denegado: no podés modificar turnos de otro usuario." });
-      }
-      if (status !== "CANCELADO") {
-        return res.status(403).json({ error: "Los clientes solo pueden cancelar turnos." });
-      }
+    if (user.role === "CLIENTE" && appointment.user_id !== user.id) {
+      return res.status(403).json({ error: "Acceso denegado." });
     }
 
     const updateResult = await pool.query(
@@ -156,12 +137,11 @@ const updateAppointmentStatus = async (req, res) => {
     );
 
     return res.status(200).json({
-      message: "Estado del turno actualizado exitosamente",
+      message: "Estado actualizado",
       appointment: updateResult.rows[0]
     });
   } catch (error) {
-    console.error("Error en updateAppointmentStatus:", error);
-    return res.status(500).json({ error: "Error interno al actualizar el estado del turno" });
+    return res.status(500).json({ error: "Error interno al actualizar estado" });
   }
 };
 

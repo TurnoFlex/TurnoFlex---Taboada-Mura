@@ -23,12 +23,10 @@ export const AuthProvider = ({ children }) => {
     fetchUser();
   }, [token]);
 
-  const login = async (email, password) => {
-    const data = await api.login(email, password);
-    localStorage.setItem("turnoflex_token", data.token);
-    setToken(data.token);
-    setUser(data.user);
-    return data.user;
+  const completeLoginWithToken = (jwtToken, userData) => {
+    localStorage.setItem("turnoflex_token", jwtToken);
+    setToken(jwtToken);
+    setUser(userData);
   };
 
   const register = async (name, email, password, role = "CLIENTE") => {
@@ -42,7 +40,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, loading }}>
+    <AuthContext.Provider value={{ user, token, completeLoginWithToken, register, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
